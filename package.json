@@ -1,0 +1,20 @@
+{
+  "name": "scratchorm",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A lightweight TypeScript ORM built from scratch.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "scratchorm": "node dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc --noEmit -p tsconfig.json",
+    "generate": "tsc -p tsconfig.json && node dist/cli/index.js generate"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^5.9.2"
+  }
+}
