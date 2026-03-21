@@ -12,7 +12,8 @@
     "build": "tsc -p tsconfig.json",
     "check": "tsc --noEmit -p tsconfig.json",
     "dev": "tsc -p tsconfig.json && node dist/cli/index.js dev",
-    "generate": "tsc -p tsconfig.json && node dist/cli/index.js generate"
+    "generate": "tsc -p tsconfig.json && node dist/cli/index.js generate",
+    "example": "tsc -p tsconfig.json && node dist/example/index.js"
   },
   "devDependencies": {
     "@types/dockerode": "^4.0.1",

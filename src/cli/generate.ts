@@ -7,7 +7,7 @@ export function generate(): void {
   try {
     const workingDirectory = process.cwd();
     const schemaPath = join(workingDirectory, "schema.scratch");
-    const outputDirectory = join(workingDirectory, "generated");
+    const outputDirectory = join(workingDirectory,"src", "generated");
     const outputPath = join(outputDirectory, "types.ts");
 
     const schemaSource = readFileSync(schemaPath, "utf8");
@@ -17,7 +17,7 @@ export function generate(): void {
     mkdirSync(outputDirectory, { recursive: true });
     writeFileSync(outputPath, generatedSource, "utf8");
 
-    console.log("✔ Generated types to generated/types.ts");
+    console.log("✔ Generated types to src/generated/types.ts");
   } catch (error: unknown) {
     const message =
       error instanceof Error ? error.message : "Unknown error occurred while generating types.";
