@@ -2,3 +2,5 @@ node_modules/
 dist/
 generated/
 *.js.map
+scratchorm.config.json
+.env

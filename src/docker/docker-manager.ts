@@ -1,4 +1,5 @@
 import Docker = require("dockerode");
+import { existsSync } from "fs";
 import { Socket } from "net";
 import type { ContainerInfo, ContainerCreateOptions } from "dockerode";
 import type { DockerWithProgress, PostgresContainerConfig } from "./types";
@@ -6,11 +7,26 @@ import type { DockerWithProgress, PostgresContainerConfig } from "./types";
 const POSTGRES_CONTAINER_PORT = "5432/tcp";
 const POSTGRES_VOLUME_NAME = "scratchorm-pgdata";
 
+function resolveDockerSocket(): string {
+  const desktopSocket = `${process.env["HOME"] ?? ""}/.docker/desktop/docker.sock`;
+  const defaultSocket = "/var/run/docker.sock";
+  const userSocket = `/run/user/${process.getuid?.() ?? 1000}/docker.sock`;
+
+  if (existsSync(desktopSocket)) return desktopSocket;
+  if (existsSync(userSocket)) return userSocket;
+  return defaultSocket;
+}
+
 export class DockerManager {
   private readonly docker: Docker;
 
   public constructor(docker?: Docker) {
-    this.docker = docker ?? new Docker();
+    if (docker !== undefined) {
+      this.docker = docker;
+      return;
+    }
+
+    this.docker = new Docker({ socketPath: resolveDockerSocket() });
   }
 
   public async isDockerRunning(): Promise<boolean> {
@@ -73,7 +89,7 @@ export class DockerManager {
         RestartPolicy: {
           Name: "unless-stopped",
         },
-        Binds: [`${POSTGRES_VOLUME_NAME}:/var/lib/postgresql/data`],
+        Binds: [`${POSTGRES_VOLUME_NAME}:/var/lib/postgresql`],
       },
     };
 
