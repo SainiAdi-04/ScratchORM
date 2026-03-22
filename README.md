@@ -6,18 +6,23 @@ ScratchORM currently includes:
 - A custom schema DSL and parser
 - Generated TypeScript model and create-input types
 - A generic query builder for CRUD operations
-- A migration runner backed by `pg`
+- Schema diffing and SQL migration generation
+- A migration runner and snapshot system backed by `pg`
 - Local PostgreSQL bootstrapping via Docker
 
 The goal is simple: understand how an ORM works end to end without hiding the moving parts.
 
-## Current Status
 
-- [x] Phase 1: schema DSL, parser, type generator, CLI
-- [x] Phase 2: local PostgreSQL support via Docker
-- [x] Phase 3 Step 1: type-safe query builder
-- [x] Phase 3 Step 2: migrations and end-to-end example
-- [ ] Phase 4: schema diffing and automatic SQL generation
+## Final Workflow
+
+```text
+1. Edit schema.scratch
+2. npm run generate
+3. npm run migrate
+4. Use typed queries
+```
+
+That means your schema, database tables, migration snapshot, and generated TypeScript types stay in sync through one simple loop.
 
 ## How It Works
 
@@ -45,6 +50,12 @@ Then generate TypeScript types:
 
 ```bash
 npm run generate
+```
+
+After that, apply schema changes to PostgreSQL and save a snapshot:
+
+```bash
+npm run migrate
 ```
 
 That produces typed model definitions in [`src/generated/types.ts`](/home/aditya-saini/Desktop/ScratchORM/src/generated/types.ts), for example:
@@ -114,23 +125,47 @@ Supported query options today:
 
 ## Migrations
 
-ScratchORM includes a small migration runner in [`src/migrate/runner.ts`](/home/aditya-saini/Desktop/ScratchORM/src/migrate/runner.ts):
+ScratchORM now has a full schema-to-migration pipeline:
+- Parse the current `schema.scratch`
+- Load the most recent saved schema snapshot from PostgreSQL
+- Diff previous vs current schema
+- Generate SQL for table and column changes
+- Run all SQL in a transaction
+- Save the new schema snapshot
 
-```ts
-import { runMigrations } from "./src/migrate/runner";
+The migration system lives under [`src/migrate/`](/home/aditya-saini/Desktop/ScratchORM/src/migrate) and includes:
+- [`differ.ts`](/home/aditya-saini/Desktop/ScratchORM/src/migrate/differ.ts) for schema diffs
+- [`sql-generator.ts`](/home/aditya-saini/Desktop/ScratchORM/src/migrate/sql-generator.ts) for SQL generation
+- [`runner.ts`](/home/aditya-saini/Desktop/ScratchORM/src/migrate/runner.ts) for transactional execution
+- [`snapshot.ts`](/home/aditya-saini/Desktop/ScratchORM/src/migrate/snapshot.ts) for migration history and latest-schema storage
 
-await runMigrations(connectionString, [
-  `CREATE TABLE IF NOT EXISTS "users" (...)`,
-  `CREATE TABLE IF NOT EXISTS "posts" (...)`,
-]);
+Supported diff operations today:
+- Create table
+- Drop table
+- Add column
+- Drop column
+
+Run the migration workflow with:
+
+```bash
+npm run migrate
 ```
 
-Migrations are executed:
-- In order
-- Inside one transaction
-- With a full rollback if any migration fails
+Typical CLI output:
 
-The initial migration lives in [`migrations/001_initial.ts`](/home/aditya-saini/Desktop/ScratchORM/migrations/001_initial.ts).
+```text
+Changes detected:
+  + create table "User"
+  ~ alter table "User" — add column "age"
+  ~ alter table "User" — drop column "oldField"
+  - drop table "Post"
+```
+
+If nothing changed, the CLI exits cleanly with:
+
+```text
+✔ Schema is up to date. No migrations needed.
+```
 
 ## End-To-End Example
 
@@ -175,6 +210,7 @@ Useful scripts:
 
 ```bash
 npm run generate
+npm run migrate
 npm run check
 npm run build
 npm run example
@@ -182,10 +218,16 @@ npm run example
 
 ## Architecture
 
-Pipeline:
+Build pipeline:
 
 ```text
 schema.scratch -> parser -> ParsedSchema AST -> type generator -> src/generated/types.ts
+```
+
+Migration pipeline:
+
+```text
+schema.scratch -> parse -> load snapshot -> diff -> generate SQL -> run SQL -> save snapshot
 ```
 
 Runtime pieces:
@@ -194,7 +236,10 @@ Runtime pieces:
 - Docker manager: starts a local PostgreSQL instance
 - Scratch client: owns a `pg.Pool` and returns typed `ModelClient`s
 - Model client: builds parameterized SQL for CRUD operations
+- Schema differ: compares previous and current schema models
+- SQL generator: turns schema changes into PostgreSQL statements
 - Migration runner: executes raw SQL arrays transactionally
+- Snapshot store: persists schema history in `_scratchorm_migrations`
 
 ## Project Structure
 
@@ -206,7 +251,7 @@ src/
 ├── docker/                 # Docker-backed PostgreSQL management
 ├── example/                # Runnable end-to-end example
 ├── generator/              # Type generation from parsed schema
-├── migrate/                # Migration runner
+├── migrate/                # Diff engine, SQL generator, snapshots, migration runner
 ├── parser/                 # Scratch DSL parser
 ├── generated/              # Generated TypeScript model types
 ├── types/                  # Shared AST/schema types
@@ -248,6 +293,7 @@ ScratchORM is a learning project, but it is also trying to be practical:
 - local-first development
 - explicit SQL behavior
 - generated types without hidden runtime magic
+- schema-aware migration tracking
 - a small enough codebase to understand completely
 
 That combination is the whole point.

@@ -7,9 +7,19 @@
   "bin": {
     "scratchorm": "node dist/cli/index.js"
   },
-  "files":[
-    "dist",
-    "README.md"
+  "files": [
+    "dist/cli",
+    "dist/client",
+    "dist/config",
+    "dist/docker",
+    "dist/generator",
+    "dist/migrate",
+    "dist/parser",
+    "dist/types",
+    "dist/index.js",
+    "dist/index.d.ts",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -28,6 +38,12 @@
     "migrations",
     "database"
   ],
+  "author": "Aditya Saini",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SainiAdi-04/ScratchORM"
+  },
   "devDependencies": {
     "@types/dockerode": "^4.0.1",
     "@types/node": "^25.5.0",
@@ -37,5 +53,8 @@
   "dependencies": {
     "dockerode": "^4.0.9",
     "pg": "^8.20.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

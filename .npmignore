@@ -1,0 +1,10 @@
+src/
+migrations/
+generated/
+schema.scratch
+scratchorm.config.json
+.env
+*.test.ts
+tsconfig.json
+dist/example/
+dist/generated/
