@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "scratchorm": "node dist/cli/index.js"
+    "scratchorm": "dist/cli/index.js"
   },
   "files": [
     "dist/cli",
@@ -22,12 +22,13 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && node -e \"const fs=require('fs');const f='dist/cli/index.js';fs.writeFileSync(f,'#!/usr/bin/env node\\n'+fs.readFileSync(f,'utf8'))\"",
+    "build": "tsc -p tsconfig.json && chmod +x dist/cli/index.js",
     "check": "tsc --noEmit -p tsconfig.json",
     "dev": "tsc -p tsconfig.json && node dist/cli/index.js dev",
     "generate": "tsc -p tsconfig.json && node dist/cli/index.js generate",
     "migrate": "tsc -p tsconfig.json && node dist/cli/index.js migrate",
-    "example": "tsc -p tsconfig.json && node dist/example/index.js"
+    "example": "tsc -p tsconfig.json && node dist/example/index.js",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "orm",
