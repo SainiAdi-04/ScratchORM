@@ -22,7 +22,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && node -e \"const fs=require('fs');const f='dist/cli/index.js';fs.writeFileSync(f,'#!/usr/bin/env node\\n'+fs.readFileSync(f,'utf8'))\"",
     "check": "tsc --noEmit -p tsconfig.json",
     "dev": "tsc -p tsconfig.json && node dist/cli/index.js dev",
     "generate": "tsc -p tsconfig.json && node dist/cli/index.js generate",
