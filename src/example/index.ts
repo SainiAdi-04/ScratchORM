@@ -77,12 +77,15 @@ async function main(): Promise<void> {
 
     const alice = await users.create({
       email: "alice@example.com",
+      username: "alice",
       name: "Alice",
     });
     logStep("[create user]", alice);
 
     const bob = await users.create({
       email: "bob@example.com",
+      username: "bob",
+      name: "Bob",
     });
     logStep("[create second user]", bob);
 

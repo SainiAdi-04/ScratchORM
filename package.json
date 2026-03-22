@@ -1,20 +1,33 @@
 {
-  "name": "scratchorm",
+  "name": "scratch-orm",
   "version": "0.1.0",
-  "private": true,
   "description": "A lightweight TypeScript ORM built from scratch.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
     "scratchorm": "node dist/cli/index.js"
   },
+  "files":[
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "check": "tsc --noEmit -p tsconfig.json",
     "dev": "tsc -p tsconfig.json && node dist/cli/index.js dev",
     "generate": "tsc -p tsconfig.json && node dist/cli/index.js generate",
+    "migrate": "tsc -p tsconfig.json && node dist/cli/index.js migrate",
     "example": "tsc -p tsconfig.json && node dist/example/index.js"
   },
+  "keywords": [
+    "orm",
+    "typescript",
+    "postgresql",
+    "docker",
+    "type-safe",
+    "migrations",
+    "database"
+  ],
   "devDependencies": {
     "@types/dockerode": "^4.0.1",
     "@types/node": "^25.5.0",
