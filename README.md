@@ -1,4 +1,6 @@
 # ScratchORM
+[![npm version](https://img.shields.io/npm/v/scratch-orm.svg)](https://www.npmjs.com/package/scratch-orm)
+[![npm downloads](https://img.shields.io/npm/dm/scratch-orm.svg)](https://www.npmjs.com/package/scratch-orm)
 
 A lightweight, type-safe PostgreSQL ORM built from scratch in TypeScript.
 
