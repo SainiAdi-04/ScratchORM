@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { dev } from "./dev";
 import { generate } from "./generate";
 import { migrate } from "./migrate";
