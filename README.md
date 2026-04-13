@@ -313,7 +313,7 @@ This project strictly enforces code quality and tests. Before committing, ensure
 
 Husky is configured to automatically lint and test your code on `git commit`.
 
-### Releasing and Changelogs
+<!-- ### Releasing and Changelogs
 
 We use [Changesets](https://github.com/changesets/changesets) to automate versioning and changelog generation.
 
@@ -329,7 +329,7 @@ When it's time to release, maintainers will run:
 ```bash
 npm run release:version # Updates package.json and CHANGELOG.md
 npm run release:publish # Publishes to npm
-```
+``` -->
 
 ## Tech Stack
 
