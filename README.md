@@ -283,6 +283,54 @@ schema.scratch              # Example schema
 | `@optional` | Makes the field optional in generated types |
 | `@default(value)` | Sets a default value such as `true`, `false`, numbers, `autoincrement()`, or `now()` |
 
+## Contributing
+
+We welcome contributions to ScratchORM! 
+
+### Local Development
+
+1. Clone the repository and install dependencies:
+   ```bash
+   npm install
+   ```
+2. Make your changes in the `src/` directory.
+
+### Testing and Linting
+
+This project strictly enforces code quality and tests. Before committing, ensure your code passes:
+
+- **Linting**: We use ESLint and TypeScript's compiler to enforce code quality.
+  ```bash
+  npm run lint
+  npm run check
+  ```
+- **Testing**: We use Vitest for unit testing. Write tests for any new functionality!
+  ```bash
+  npm run test
+  # Or run tests in watch mode during development:
+  npm run test:watch
+  ```
+
+Husky is configured to automatically lint and test your code on `git commit`.
+
+### Releasing and Changelogs
+
+We use [Changesets](https://github.com/changesets/changesets) to automate versioning and changelog generation.
+
+If your PR includes a bug fix or new feature, please include a changeset:
+
+```bash
+npm run changeset
+```
+
+Follow the prompts to select the bump type (major/minor/patch) and provide a short summary of your change. Commit the generated markdown file in the `.changeset/` directory along with your PR. 
+
+When it's time to release, maintainers will run:
+```bash
+npm run release:version # Updates package.json and CHANGELOG.md
+npm run release:publish # Publishes to npm
+```
+
 ## Tech Stack
 
 - TypeScript with `strict` mode

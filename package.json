@@ -32,6 +32,9 @@
     "lint": "eslint src/",
     "test": "vitest run",
     "test:watch": "vitest",
+    "changeset": "changeset",
+    "release:version": "changeset version",
+    "release:publish": "changeset publish",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -53,6 +56,7 @@
     "url": "https://github.com/SainiAdi-04/ScratchORM"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.30.0",
     "@eslint/js": "^10.0.1",
     "@types/dockerode": "^4.0.1",
     "@types/node": "^25.5.0",
