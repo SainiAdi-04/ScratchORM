@@ -11,7 +11,7 @@ function buildConnectionString(
   port: number,
   database: string,
 ): string {
-  return `postgresql://${user}:${password}@localhost:${port}/${database}`;
+  return `postgresql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@localhost:${port}/${encodeURIComponent(database)}`;
 }
 
 function writeDatabaseUrlToEnv(connectionString: string): void {

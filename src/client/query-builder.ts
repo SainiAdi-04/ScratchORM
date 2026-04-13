@@ -73,7 +73,7 @@ export class ModelClient<T extends QueryResultRow, TCreate extends Record<string
     values.push(...whereClause.values);
 
     if (options?.orderBy) {
-      const direction = options.orderBy.direction.toUpperCase();
+      const direction = String(options.orderBy.direction).toUpperCase() === "DESC" ? "DESC" : "ASC";
       query += ` ORDER BY ${escapeIdentifier(String(options.orderBy.field))} ${direction}`;
     }
 

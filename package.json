@@ -28,7 +28,12 @@
     "generate": "tsc -p tsconfig.json && node dist/cli/index.js generate",
     "migrate": "tsc -p tsconfig.json && node dist/cli/index.js migrate",
     "example": "tsc -p tsconfig.json && node dist/example/index.js",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "lint": "eslint src/",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.ts": "eslint --fix"
   },
   "keywords": [
     "orm",
@@ -46,10 +51,15 @@
     "url": "https://github.com/SainiAdi-04/ScratchORM"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/dockerode": "^4.0.1",
     "@types/node": "^25.5.0",
     "@types/pg": "^8.20.0",
-    "typescript": "^5.9.2"
+    "eslint": "^10.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.58.2"
   },
   "dependencies": {
     "dockerode": "^4.0.9",
