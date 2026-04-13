@@ -30,6 +30,8 @@
     "example": "tsc -p tsconfig.json && node dist/example/index.js",
     "prepublishOnly": "npm run build",
     "lint": "eslint src/",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -59,7 +61,8 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.58.2"
+    "typescript-eslint": "^8.58.2",
+    "vitest": "^4.1.4"
   },
   "dependencies": {
     "dockerode": "^4.0.9",
